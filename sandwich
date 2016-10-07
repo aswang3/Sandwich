@@ -1,0 +1,7 @@
+chmod 440 $1
+tmux \
+	new -s sandwich './connect' $1\; \
+	split-window -h 'sleep 2'\; \
+	select-pane -L
+rm phantom_sandwich.c
+chmod 660 $1
