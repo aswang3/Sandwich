@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <wait.h>
+#include <string.h>
 
 int main(int argc, char *argv[]) {
 
@@ -10,39 +11,78 @@ int main(int argc, char *argv[]) {
     exit(2);
   }
 
-  FILE* f_main = fopen(argv[1], "r");
+FILE* f_main = fopen(argv[1], "r");
 
-  // NEEDS: temp file is going to be in shared space, not current directory
-  FILE* f_temp = fopen("phantom_sandwich.c", "a+");
 
-  // NEEDS: should check if someone is already editing before trying to overwrite temp
+//mapping from input file to hidden file
+	char file[strlen(argv[1])+1];
+	strcpy(file, argv[1]);
+   	char filehold [strlen(argv[1])+2];
+	strcpy(filehold, ".");
+	strcat(filehold, argv[1]);
 
-  char* txt;
-  size_t len = 0;
-  ssize_t line = 0;
-  while ((line = getline(&txt, &len, f_main)) != EOF) {
-    fprintf(f_temp, "%s", txt);
-  }
+//try to open the file. if it is null, create it
+//
+	FILE* f_temp = fopen(filehold, "r+b");
 
-  fclose(f_main);
-  fclose(f_temp);
+  	if(!f_temp)
+	{
+		f_temp = fopen(filehold , "a+");
 
-  // fork into vim
+		char* txt;
+ 		size_t len = 0;
+ 		ssize_t line = 0;
+		while ((line = getline(&txt, &len, f_main)) != EOF) {
+	 		  fprintf(f_temp, "%s", txt);
+  	 	}
+  	}
 
-  int status = 0;
-  pid_t p = fork();
+	fclose(f_main);
+	fclose(f_temp);
 
-  if (!p) {
-    execlp("vim", "vim", "phantom_sandwich.c", (char*) NULL);
-    printf("Cannot open temp file\n");
-    exit(1);
-  }
+// fork into vim
 
-  waitpid(p, &status, 0);
+	int status = 0;
+	pid_t p = fork();
 
-  // NEEDS: should overwrite main files if last one out
+	if (!p) {
+		execlp("vim", "vim", filehold, (char*) NULL);
+//TODO needs to pipe in automatic E to vim
 
-  // Idea: main file on sandwich server (or whatever), can pull the temp file from sandwich
-  
-  return 0;
+		printf("Cannot open temp file\n");
+		exit(1);
+	}
+
+        waitpid(p, &status, 0);	
+
+// TODO NEEDS: should overwrite main files if last one out
+// Currently overwrites no matter what
+
+	f_temp = fopen(filehold, "r");
+	f_main = fopen(file, "w+");
+
+	char*txt;
+	size_t len = 0;
+	ssize_t line = 0;
+	while((line = getline(&txt, &len, f_temp))!=EOF)
+		fprintf(f_main, "%s", txt);
+
+	fclose(f_main);
+	fclose(f_temp);
+
+	
+
+//TODO remove temp file after done IF LAST
+//Currently removes no matter what
+
+	remove(filehold);
+
+//TODO update temp file if save is sent to main file, and other user is editing temp
+
+
+
+//TODO Should reset file permissionas as well
+// Idea: main file on sandwich server (or whatever), can pull the temp file from sandwich
+   
+        return 0;
 }
