@@ -58,6 +58,7 @@ FILE* f_main = fopen(argv[1], "r");
 // TODO NEEDS: should overwrite main files if last one out
 // Currently overwrites no matter what
 
+
 	f_temp = fopen(filehold, "r");
 	f_main = fopen(file, "w+");
 
@@ -66,7 +67,7 @@ FILE* f_main = fopen(argv[1], "r");
 	ssize_t line = 0;
 	while((line = getline(&txt, &len, f_temp))!=EOF)
 		fprintf(f_main, "%s", txt);
-
+printf("hello\n");
 	fclose(f_main);
 	fclose(f_temp);
 
