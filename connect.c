@@ -24,21 +24,45 @@ FILE* f_main = fopen(argv[1], "r");
 //try to open the file. if it is null, create it
 //
 	FILE* f_temp = fopen(filehold, "r+b");
+	int mult_flag = 1; // already exists, so multiple users
+
 
   	if(!f_temp)
 	{
 		f_temp = fopen(filehold , "a+");
 
-		char* txt;
+		char* txt = NULL;
  		size_t len = 0;
  		ssize_t line = 0;
 		while ((line = getline(&txt, &len, f_main)) != EOF) {
 	 		  fprintf(f_temp, "%s", txt);
   	 	}
+
+		mult_flag = 0; // first user
   	}
 
 	fclose(f_main);
 	fclose(f_temp);
+
+	if(mult_flag){ // multiple users, so update status
+		int st_status = 0;
+		pid_t st_c = fork(); // first fork to get into the bottom right pane
+		if(st_c < 0) fprintf(stderr, "fuck.");
+		else if(!st_c){
+			execlp("tmux", "tmux select-pane -R", (char*)NULL); 
+			printf("you dun goofed");
+			exit(1);
+		}
+		else waitpid(st_c, &st_status, 0);
+
+		pid_t st_c2 = fork(); // second fork to get into top right pane
+		if(st_c2 < 0) fprintf(stderr, "fuck.");  
+		else if(!st_c2){
+			execlp("tmux", "tmux select-pane -U", (char*)NULL);
+			printf("yoU DUN GOOFED");
+			exit(1);            
+		}
+	}
 
 // fork into vim
 
@@ -67,7 +91,7 @@ FILE* f_main = fopen(argv[1], "r");
 	ssize_t line = 0;
 	while((line = getline(&txt, &len, f_temp))!=EOF)
 		fprintf(f_main, "%s", txt);
-printf("hello\n");
+	printf("hello\n");
 	fclose(f_main);
 	fclose(f_temp);
 

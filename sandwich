@@ -1,11 +1,12 @@
 #!/bin/bash
-chmod 440 $1
+chmod 440 $2
+
 tmux \
-	new -d -s sandwich \; \
+	new -d -s $1 \; \
 	split-window -h\; \
 	split-window \; \
 	select-pane -t 0\; \
 	attach \; \
-	send-keys './connect' Space $1 C-m\; \
+	send-keys './connect' Space $2 C-m\; \
 
-chmod 660 $1
+chmod 660 $2
