@@ -1,7 +1,12 @@
-chmod 440 $1
+#!/bin/bash
+chmod 440 $2
+
 tmux \
-	new -s sandwich './connect' $1\; \
-	split-window -h 'sleep 2'\; \
-	select-pane -L
-rm phantom_sandwich.c
-chmod 660 $1
+	new -d -s $1 \; \
+	split-window -h\; \
+	split-window \; \
+	select-pane -t 0\; \
+	attach \; \
+	send-keys './connect' Space $2 C-m\; \
+
+chmod 660 $2
