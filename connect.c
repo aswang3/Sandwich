@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <wait.h>
 #include <string.h>
+#include "fifo.c"
 
 int main(int argc, char *argv[]) {
 
@@ -76,8 +77,11 @@ FILE* f_main = fopen(argv[1], "r");
 		printf("Cannot open temp file\n");
 		exit(1);
 	}
+  waitpid(p, &status, 0);
 
-        waitpid(p, &status, 0);	
+  char * fifo_buffer = malloc(1024*1024);	
+  fifo_read(fifo_buffer); // Reads in from the FIFO pipe
+
 
 // TODO NEEDS: should overwrite main files if last one out
 // Currently overwrites no matter what
