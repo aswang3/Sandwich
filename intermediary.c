@@ -25,6 +25,9 @@ int main(int argc, char * argv[]){
   strcat(command, " /tmp/pipe > .diff.txt");  // command = "diff -c filename /tmp/pipe > .diff.txt"
 
   system(command); // diffs original file and piped file and stores into .diff.txt
+
+  system("patch < .diff.txt"); // patches changes into the original file
+
   free(command);
 
   return 0;

@@ -8,5 +8,6 @@ tmux \
 	select-pane -t 0\; \
 	attach \; \
 	send-keys './connect' Space $2 C-m\; \
+	send-keys './intermediary' Space $2 C-m\; \
 
 chmod 660 $2
