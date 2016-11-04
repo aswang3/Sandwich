@@ -9,8 +9,7 @@
 /**
 ** Read buffer from FIFO Pipe (sent by Vim)
 ** "Diff" buffer with original file
-** Send changes to TCP server
-** Include some kind of metadata describing changes
+** Creates patch file and sends to server
 **/
 int main(int argc, char * argv[]){
   char * pipe = "/tmp/pipe";
