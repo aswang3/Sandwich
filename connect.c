@@ -3,7 +3,14 @@
 #include <unistd.h>
 #include <wait.h>
 #include <string.h>
+<<<<<<< HEAD
 #include "fifo.c"
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1e91d1fcdd408631f6505fb8ee0d1869412c5acb
+>>>>>>> 8473424eda16200090dadd9080116279f8ef19d3
 
 int main(int argc, char *argv[]) {
 
@@ -14,6 +21,7 @@ int main(int argc, char *argv[]) {
 
 FILE* f_main = fopen(argv[1], "r");
 
+<<<<<<< HEAD
 
 //mapping from input file to hidden file
 	char file[strlen(argv[1])+1];
@@ -26,6 +34,35 @@ FILE* f_main = fopen(argv[1], "r");
 //
 	FILE* f_temp = fopen(filehold, "r+b");
 	int mult_flag = 1; // already exists, so multiple users
+=======
+  // NEEDS: temp file is going to be in shared space, not current directory
+
+//mapping from input file to hidden file
+	char filehold [strlen(argv[1])+2];
+	strcpy(filehold, ".");
+	strcat(filehold, argv[1]);
+
+
+//try to open the file. if it is null, create it
+
+  FILE* f_temp = fopen(filehold, "r+b");
+
+	if(!f_temp)
+	{
+		f_temp = fopen(filehold , "a+");
+
+		  // NEEDS: should check if someone is already editing before trying to overwrite temp
+
+		  char* txt;
+		  size_t len = 0;
+		  ssize_t line = 0;
+		  while ((line = getline(&txt, &len, f_main)) != EOF) {
+		  fprintf(f_temp, "%s", txt);
+	 	}
+
+	}
+
+>>>>>>> 1e91d1fcdd408631f6505fb8ee0d1869412c5acb
 
 
   	if(!f_temp)
@@ -39,6 +76,7 @@ FILE* f_main = fopen(argv[1], "r");
 	 		  fprintf(f_temp, "%s", txt);
   	 	}
 
+<<<<<<< HEAD
 		mult_flag = 0; // first user
   	}
 
@@ -107,6 +145,17 @@ FILE* f_main = fopen(argv[1], "r");
 	remove(filehold);
 
 //TODO update temp file if save is sent to main file, and other user is editing temp
+=======
+  if (!p) {
+    execlp("vim", "vim", filehold, (char*) NULL);
+//needs to pipe in automatic E to vim
+
+//	fprintf(stdin, "E\n", 3);
+
+    printf("Cannot open temp file\n");
+    exit(1);
+  }
+>>>>>>> 1e91d1fcdd408631f6505fb8ee0d1869412c5acb
 
 
 
