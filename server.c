@@ -55,3 +55,14 @@ int main(int argc, char**argv){//TCP Server
 	}
 
 }
+
+int startclient(){
+
+        struct addrinfo hints, *results;
+        memset(&hints, 0, sizeof(hints));
+        hints.ai_family = AF_INET;
+        hints.ai_socktype = SOCK_STREAM;
+        int result = getaddrinfo("illinois.edu", "443", &hints, &results);
+
+}
+
