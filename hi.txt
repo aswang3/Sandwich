@@ -1,9 +1,0 @@
-<<<<<<< HEAD
-afjlekfje;
-ifeijsofkjsl
-=======
-hi
-hello
-hola
-como estas
->>>>>>> 1e91d1fcdd408631f6505fb8ee0d1869412c5acb

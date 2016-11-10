@@ -40,16 +40,26 @@ int main(int argc, char *argv[])
         return 1;
     } 
 
-    if( connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
+    while( connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
     {
        printf("\n Error : Connect Failed \n");
-       return 1;
-    } 
-	int x = send(sockfd, "Hello", strlen("Hello")+1,0);
-	printf("%d", x);
+//continue;
+//       return 1;
+    }
+
+//while(1)
+//{
+	char sendString[10000];
+	read(0, &sendString, 10000); 
+	int x = send(sockfd, sendString, strlen(sendString)+1,0);
+//	printf("%d", x);
 
     while ( (n = read(sockfd, recvBuff, sizeof(recvBuff)-1)) > 0)
     {
+//	n = read(sockfd, recvBuff, sizeof(recvBuff)-1);
+
+//	if(n<=0)
+//		continue;
 //	strcpy(sendBuff, "Hello");
 //	send(sockfd, "Hello", strlen("Hello")+1,0);
         recvBuff[n] = 0;
@@ -57,7 +67,18 @@ int main(int argc, char *argv[])
         {
             printf("\n Error : Fputs error\n");
         }
-	send(sockfd, "Hello", strlen("Hello")+1,0);
+//	send(sockfd, "Hello", strlen("Hello")+1,0);
+//	else
+//	{
+ //	close(sockfd);
+//	while( connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0){}
+ 	char tosend[10000];
+	read(0, &tosend, 10000);
+//	if(fputs(tosend, stdout)==EOF)
+//		break;
+        int x = send(sockfd, tosend, strlen(tosend)+1,0);
+//	}
+
  
    } 
 
@@ -65,6 +86,6 @@ int main(int argc, char *argv[])
     {
         printf("\n Read error \n");
     } 
-
+//}
     return 0;
 }

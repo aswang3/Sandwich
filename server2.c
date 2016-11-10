@@ -30,21 +30,30 @@ int main(int argc, char *argv[])
 
     listen(listenfd, 10); 
 
+
     while(1)
     {
         connfd = accept(listenfd, (struct sockaddr*)NULL, NULL); 
-//	printf("%d", connfd);
-	int bytes = recv(listenfd, acceptBuff, sizeof(acceptBuff),0);
 
-	printf("%d\n", bytes);
+//	while(connfd){
+//	printf("%d", connfd);
+	while(1){
+	int bytes = recv(connfd, acceptBuff, sizeof(acceptBuff),0);
+
+//	printf("%d\n", bytes);
+//	if(bytes>0)
 //	fwrite(sendBuff, sizeof(sendBuff), 1, stdout);
 //        ticks = time(NULL);
 //        snprintf(sendBuff, sizeof(sendBuff), "%.24s\r\n", ctime(&ticks));
-	snprintf(sendBuff, sizeof(sendBuff), "%s", acceptBuff);
-	
-        write(connfd, sendBuff, strlen(sendBuff)); 
 
+	
+	snprintf(sendBuff, sizeof(sendBuff), "%s", acceptBuff);
+
+        write(connfd, sendBuff, strlen(sendBuff)); 
+}
         close(connfd);
-        sleep(1);
+
+//	}
+//        sleep(1);
      }
 }
