@@ -86,7 +86,7 @@ FILE* f_main = fopen(argv[1], "r");
 	if(mult_flag){ // multiple users, so update status
 		int st_status = 0;
 		pid_t st_c = fork(); // first fork to get into the bottom right pane
-		if(st_c < 0) fprintf(stderr, "fuck.");
+		if(st_c < 0) fprintf(stderr, "fun.");
 		else if(!st_c){
 			execlp("tmux", "tmux select-pane -R", (char*)NULL); 
 			printf("you dun goofed");
@@ -95,7 +95,7 @@ FILE* f_main = fopen(argv[1], "r");
 		else waitpid(st_c, &st_status, 0);
 
 		pid_t st_c2 = fork(); // second fork to get into top right pane
-		if(st_c2 < 0) fprintf(stderr, "fuck.");  
+		if(st_c2 < 0) fprintf(stderr, "fun.");  
 		else if(!st_c2){
 			execlp("tmux", "tmux select-pane -U", (char*)NULL);
 			printf("yoU DUN GOOFED");
