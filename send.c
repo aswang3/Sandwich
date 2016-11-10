@@ -24,6 +24,8 @@ int main () {
   }
 
   write(fd, &in, strlen(in) + 1);
+  
+  free(in);
 
   unlink(myfifo);
   close(fd);
