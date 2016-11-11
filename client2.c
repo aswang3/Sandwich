@@ -26,8 +26,6 @@ void makeFifo(){
 **/
 void createPatch(char*arg)
 {
-
-	printf("EKAjfr;oiwajfrowsjfr;osirj\n");
   char * pipe = "/tmp/pipe";
 
   int fd = open(pipe, O_RDONLY);
@@ -57,7 +55,7 @@ void createPatch(char*arg)
 
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char *argv[]) // MAIN NEEDS COMMENTS PLZ
 {
     int sockfd = 0, n = 0;
     char recvBuff[1024];
@@ -65,11 +63,51 @@ int main(int argc, char *argv[])
     struct sockaddr_in serv_addr; 
     makeFifo();
 
-    if(argc != 3)
+    if(argc != 4)
     {
         printf("\n Usage: %s <ip of server> \n",argv[0]);
         return 1;
     } 
+
+    // could port connect.c to here . . .
+
+    /*
+
+    FILE* f_main = fopen(argv[3], "r"); // argv[3] would be file name (what is argv[2]?)
+
+    char file[strlen(argv[1])+1];	// mapping from input file to hidden file
+    strcpy(file, argv[1]);
+    char filehold [strlen(argv[1])+2];
+    strcpy(filehold, ".");
+    strcat(filehold, argv[1]);
+
+    FILE* f_temp = fopen(filehold. "r+b");  // try to open the file. if it is null, create it
+
+    if(!f_temp) {                           // creating temp file if it doesn't exist
+        f_temp = fopen(filehold , "a+");
+        char* txt;
+        size_t len = 0;
+        ssize_t line = 0;
+        while ((line = getline(&txt, &len, f_main)) != EOF) fprintf(f_temp, "%s", txt);
+    }
+
+    fclose(f_main);      // closing both main and temp so vim can read
+    fclose(f_temp);
+
+    // didn't port section for multiple users yet (idk how it works atm)
+
+    int status = 0;
+    pid_t p = fork();
+
+    if (!p) {
+        execlp("vim", "vim", filehold, "-u", "sandrc",(char*) NULL); // sandrc is vim sript/plugin
+        printf("Cannot open temp file\n");
+        exit(1);
+    }
+
+    */
+
+    // . . . and i did
 
     memset(recvBuff, '0',sizeof(recvBuff));
     if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
@@ -99,7 +137,6 @@ int main(int argc, char *argv[])
 	char sendString[strlen(".diff.txt\n")+1];
 	strcpy(sendString, ".diff.txt\n");
 	printf("%s", sendString);
-//	read(0, &sendString, strlen(".diff.txt")); 
 	int x = send(sockfd, sendString, strlen(sendString)+1,0);
 
     while ( (n = read(sockfd, recvBuff, sizeof(recvBuff)-1)) > 0)
@@ -118,12 +155,33 @@ int main(int argc, char *argv[])
 	read(0, sendString, strlen(".diff.txt")); 
 	int x = send(sockfd, sendString, strlen(sendString)+1,0);
  
-   } 
+    }  
 
     if(n < 0)
     {
         printf("\n Read error \n");
-    } 
+    }
+
+    // remainder of connect port
+
+    /*
+
+    waitpid(p, &status, 0);
+
+    f_temp = fopen(filehold, "r");
+    f_main = fopen(file, "w+");
+
+    char*txt;
+    size_t len = 0;
+    ssize_t line = 0;
+    while((line = getline(&txt, &len, f_temp))!=EOF) fprintf(f_main, "%s", txt);
+
+    fclose(f_main);
+    fclose(f_temp);
+
+    remove(filehold);
+
+    */
 
     return 0;
 }
