@@ -1,0 +1,14 @@
+
+
+autocmd BufRead * call Load()
+autocmd TextChanged,TextChangedI * call Send()
+
+function! Send()
+  execute ":silent :w !./send"
+endfunction
+
+function! Load()
+  while 1
+    execute ":silent :% !cat .SANDWICH.GOD"
+  endwhile
+endfunction
