@@ -24,5 +24,5 @@ client.o: client2.c
 server: server.o
 	gcc server.o -o server -I.
 
-server.o: server2.c
-	gcc server2.c -c -o server.o -I.
+server.o: server.c
+	gcc server.c -c -o server.o -I.

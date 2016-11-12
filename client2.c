@@ -8,6 +8,10 @@
 #include <unistd.h>
 #include <errno.h>
 #include <arpa/inet.h> 
+<<<<<<< HEAD
+
+int main(int argc, char *argv[])
+=======
 #include <sys/stat.h>
 #include <fcntl.h>
 
@@ -56,19 +60,27 @@ void createPatch(char*arg)
 }
 
 int main(int argc, char *argv[]) // MAIN NEEDS COMMENTS PLZ
+>>>>>>> 93d68428582af0730637691ced4e4661ac9ebc2c
 {
     int sockfd = 0, n = 0;
     char recvBuff[1024];
     char sendBuff[1024];
     struct sockaddr_in serv_addr; 
+<<<<<<< HEAD
+
+    if(argc != 2)
+=======
     makeFifo();
 
     if(argc != 4)
+>>>>>>> 93d68428582af0730637691ced4e4661ac9ebc2c
     {
         printf("\n Usage: %s <ip of server> \n",argv[0]);
         return 1;
     } 
 
+<<<<<<< HEAD
+=======
     // could port connect.c to here . . .
 
     /*
@@ -109,6 +121,7 @@ int main(int argc, char *argv[]) // MAIN NEEDS COMMENTS PLZ
 
     // . . . and i did
 
+>>>>>>> 93d68428582af0730637691ced4e4661ac9ebc2c
     memset(recvBuff, '0',sizeof(recvBuff));
     if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
     {
@@ -130,6 +143,27 @@ int main(int argc, char *argv[]) // MAIN NEEDS COMMENTS PLZ
     while( connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
     {
        printf("\n Error : Connect Failed \n");
+<<<<<<< HEAD
+//continue;
+//       return 1;
+    }
+
+//while(1)
+//{
+	char sendString[10000];
+	read(0, &sendString, 10000); 
+	int x = send(sockfd, sendString, strlen(sendString)+1,0);
+//	printf("%d", x);
+
+    while ( (n = read(sockfd, recvBuff, sizeof(recvBuff)-1)) > 0)
+    {
+//	n = read(sockfd, recvBuff, sizeof(recvBuff)-1);
+
+//	if(n<=0)
+//		continue;
+//	strcpy(sendBuff, "Hello");
+//	send(sockfd, "Hello", strlen("Hello")+1,0);
+=======
     }
 
 	createPatch(argv[2]);
@@ -141,11 +175,28 @@ int main(int argc, char *argv[]) // MAIN NEEDS COMMENTS PLZ
 
     while ( (n = read(sockfd, recvBuff, sizeof(recvBuff)-1)) > 0)
     {
+>>>>>>> 93d68428582af0730637691ced4e4661ac9ebc2c
         recvBuff[n] = 0;
         if(fputs(recvBuff, stdout) == EOF)
         {
             printf("\n Error : Fputs error\n");
         }
+<<<<<<< HEAD
+//	send(sockfd, "Hello", strlen("Hello")+1,0);
+//	else
+//	{
+ //	close(sockfd);
+//	while( connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0){}
+ 	char tosend[10000];
+	read(0, &tosend, 10000);
+//	if(fputs(tosend, stdout)==EOF)
+//		break;
+        int x = send(sockfd, tosend, strlen(tosend)+1,0);
+//	}
+
+ 
+   } 
+=======
 
 	createPatch(argv[2]);
 
@@ -156,10 +207,15 @@ int main(int argc, char *argv[]) // MAIN NEEDS COMMENTS PLZ
 	int x = send(sockfd, sendString, strlen(sendString)+1,0);
  
     }  
+>>>>>>> 93d68428582af0730637691ced4e4661ac9ebc2c
 
     if(n < 0)
     {
         printf("\n Read error \n");
+<<<<<<< HEAD
+    } 
+//}
+=======
     }
 
     // remainder of connect port
@@ -183,5 +239,6 @@ int main(int argc, char *argv[]) // MAIN NEEDS COMMENTS PLZ
 
     */
 
+>>>>>>> 93d68428582af0730637691ced4e4661ac9ebc2c
     return 0;
 }
