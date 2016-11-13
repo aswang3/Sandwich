@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <unstd.h>
+#include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
 #include <fcntl.h>
@@ -58,7 +58,9 @@ int main(){
   char buffer[2048];
   strcpy(buffer, p);
   strcat(buffer, " ");
-  strcat(buffer, time_stamp);
+  char d[52];
+  sprintf(d, "%d", (int)time_stamp);
+  strcat(buffer, d);
 
   // Write to FIFO pipe
   FILE * fd = fopen("connect_pipe", "a");
