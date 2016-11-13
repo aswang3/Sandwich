@@ -1,10 +1,7 @@
-
-
-autocmd BufRead * call Load()
 autocmd TextChanged,TextChangedI * call Send()
 
 function! Send()
-  execute ":silent :w !./send"
+  execute ":silent :w !./thing"
 endfunction
 
 function! Load()
