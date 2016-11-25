@@ -21,7 +21,7 @@ int main(){
   // Use getline to read from stdin
   // Use fwrite to store in temp file
 
-  FILE * temp = fopen(".temp.txt", "w");
+  FILE * temp = fopen(".temp.txt", "r+");
 
   char * line = NULL;
   size_t size = 0;
@@ -63,7 +63,7 @@ int main(){
   strcat(buffer, d);
 
   // Write to FIFO pipe
-  FILE * fd = fopen("connect_pipe", "a");
+  FILE * fd = fopen(".connect_pipe", "a");
   fwrite(buffer, 1, strlen(buffer), fd);
 
   // Clean up
