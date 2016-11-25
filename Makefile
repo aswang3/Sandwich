@@ -26,3 +26,9 @@ server: server.o
 
 server.o: server.c
 	gcc server.c -c -o server.o -I.
+
+thing: thing.o
+	gcc thing.o -o thing -I.
+
+thing.o: thing.c
+	gcc thing.c -c -o thing.o -I.
