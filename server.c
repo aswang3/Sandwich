@@ -7,16 +7,28 @@
 #include <unistd.h>
 int main(int argc, char**argv[]) //argv 1 is name of file
 {
+
+	if(argc != 2)
+	{
+		printf("Usage: ./server <filename>\n");
+		return -1;
+	}
+
 	//Create master updated file
-	char* master = malloc(sizeof(char)*(strlen("cp .SANDWICH.GOD ")+1+strlen(argv[1])));
+	char* master = malloc(strlen("cp .SANDWICH.GOD ")+1+strlen(argv[1]));
 	strcpy(master, "cp ");
 	strcat(master, argv[1]);
 	strcat(master, " .SANDWICH.GOD");
-	system(master);
+	int check = system(master);
+	if(WEXITSTATUS(check) != 0)
+        {
+                printf("Error in file: %s\n", argv[1]);
+		return -1;
+        }
 
 	//create pipe
 	mkfifo(".connect_pipe", S_IXUSR);
-	int check = open("connect_pipe", "r");
+	check = open(".connect_pipe", O_RDONLY);
 	dup2(check, STDIN_FILENO);
 	
 	//initialize variables to be read from pipe
@@ -34,14 +46,12 @@ int main(int argc, char**argv[]) //argv 1 is name of file
 
 //TODO Perform comparison. If passed, update
 		mastertime = *timestamp;
-		char patch_command [strlen(patch) +15];
-		strcpy(patch_command, "patch < ");
+		char patch_command [strlen(patch) +40];
+		strcpy(patch_command, "patch .SANDWICH.GOD");
 		strcat(patch_command, patch);
 		system(patch_command);
-
-
+		free(patch_command);
 		printf("patch applied\n");
-
 	}
 
 

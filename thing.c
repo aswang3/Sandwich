@@ -35,8 +35,9 @@ int main(){
   }
 
   ssize_t bytes;
-  while((bytes = getline(&line, &size, stdin)) != -1){
-    fwrite(line, 1, bytes, temp);
+  while((bytes = getline(&line, &size, stdin)) != EOF){
+//    fwrite(line, 1, bytes, temp);
+    fprintf(temp, "%s", line);
   }
 
   // Create timestamp
@@ -63,12 +64,13 @@ int main(){
   strcat(buffer, d);
 
   // Write to FIFO pipe
-  FILE * fd = fopen(".connect_pipe", "a");
-  fwrite(buffer, 1, strlen(buffer), fd);
+  int fd = open(".connect_pipe", O_WRONLY);
+//  fwrite(buffer, 1, strlen(buffer), fd);
+  write(fd, buffer, strlen(buffer)+1);
 
   // Clean up
   fclose(temp);
-  fclose(fd);
+  close(fd);
   free(line);
   
   return 0;
