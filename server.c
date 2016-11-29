@@ -46,11 +46,11 @@ int main(int argc, char**argv[]) //argv 1 is name of file
 
 //TODO Perform comparison. If passed, update
 		mastertime = *timestamp;
-		char patch_command [strlen(patch) +15];
-		strcpy(patch_command, "patch < ");
+		char patch_command [strlen(patch) +40];
+		strcpy(patch_command, "patch .SANDWICH.GOD");
 		strcat(patch_command, patch);
 		system(patch_command);
-
+		free(patch_command);
 		printf("patch applied\n");
 	}
 
